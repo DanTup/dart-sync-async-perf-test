@@ -67,10 +67,11 @@ handleRequestSync(HttpRequest request, File file) {
 }
 
 handleNotFound(HttpRequest request) {
-  request.response.headers.contentType = new ContentType('text', 'html');
-  request.response.write('<html>');
-  request.response.write('<head><meta name="blitz" content="mu-fdd9ffcc-bcfa78cf-3b78f318-88bd05e2"></head>');
-  request.response.write('<body><h1>No file!</h1></body>');
-  request.response.write('</html>');
+  request.response.headers.contentType = new ContentType('text', 'plain');
+  //request.response.write('<html>');
+  //request.response.write('<head><meta name="blitz" content="mu-fdd9ffcc-bcfa78cf-3b78f318-88bd05e2"></head>');
+  //request.response.write('<body><h1>No file!</h1></body>');
+  //request.response.write('</html>');
+  request.response.write('loaderio-717901bfd1aa2a9dd0945e365bc71ba3');
   request.response.close();
 }
