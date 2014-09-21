@@ -7,7 +7,7 @@ int requestNumber = 1; // Which folder to read static data from; to reduce impac
 
 main() {
   webroot = path.join(Directory.current.path, 'web');
-  HttpServer.bind(InternetAddress.ANY_IP_V4, 8080)
+  HttpServer.bind(InternetAddress.ANY_IP_V4, 80)
     .then((HttpServer server) {
       server.listen(handleRequest);
     })
