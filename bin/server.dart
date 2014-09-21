@@ -28,9 +28,9 @@ handleRequest(HttpRequest request) {
     requestNumber = 1;
 
   // Use the sync/async handler based on whether the request came to /sync or /async.
-  if (request.uri.pathSegments[0] == 'sync') {
+  if (request.uri.pathSegments.length > 0 && request.uri.pathSegments[0] == 'sync') {
     handleRequestSync(request, getFile());
-  } else if (request.uri.pathSegments[0] == 'async') {
+  } else if (request.uri.pathSegments.length > 0 && request.uri.pathSegments[0] == 'async') {
     handleRequestAsync(request, getFile());
   } else {
     handleNotFound(request);
@@ -67,11 +67,10 @@ handleRequestSync(HttpRequest request, File file) {
 }
 
 handleNotFound(HttpRequest request) {
-  request.response.statusCode = HttpStatus.NOT_FOUND;
   request.response.headers.contentType = new ContentType('text', 'html');
   request.response.write('<html>');
   request.response.write('<head><meta name="blitz" content="mu-fdd9ffcc-bcfa78cf-3b78f318-88bd05e2"></head>');
-  request.response.write('<body><h1>404 File Not Found</h1></body>');
+  request.response.write('<body><h1>No file!</h1></body>');
   request.response.write('</html>');
   request.response.close();
 }
