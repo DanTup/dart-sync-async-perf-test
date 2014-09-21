@@ -15,12 +15,13 @@ main() {
 }
 
 handleRequest(HttpRequest request) {
-  
   // Figure out which file we're serving, using ascending folders to ensure we don't hit disk cache immediately.
   // Although real-world apps will likely benefit from disk caches; they will also have significantly more
   // files than 3!
-  var filename = path.join(path.join(webroot, (requestNumber++).toString()), request.uri.pathSegments[1]);
-  var file = new File(filename);
+  getFile() {
+    var filename = path.join(path.join(webroot, (requestNumber++).toString()), request.uri.pathSegments[1]);
+    return new File(filename);
+  }
 
   // Roll over when we run out of folders.
   if (requestNumber > 200)
@@ -28,11 +29,11 @@ handleRequest(HttpRequest request) {
 
   // Use the sync/async handler based on whether the request came to /sync or /async.
   if (request.uri.pathSegments[0] == 'sync') {
-    handleRequestSync(request, file);
+    handleRequestSync(request, getFile());
   } else if (request.uri.pathSegments[0] == 'async') {
-    handleRequestAsync(request, file);
+    handleRequestAsync(request, getFile());
   } else {
-    handleNotFound(request, file);
+    handleNotFound(request);
   }
 }
 
@@ -65,10 +66,9 @@ handleRequestSync(HttpRequest request, File file) {
   request.response.close();
 }
 
-handleNotFound(HttpRequest request, File file) {
+handleNotFound(HttpRequest request) {
   request.response.statusCode = HttpStatus.NOT_FOUND;
   request.response.headers.contentType = new ContentType('text', 'html');
   request.response.write('<h1>404 File Not Found</h1>');
-  request.response.write('<p>${file.path}</p>');
   request.response.close();
 }
